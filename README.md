@@ -3,7 +3,7 @@ Implementa no Nanvix uma chamada de sistema que coloca em um buffer informaçõe
 
 Integrantes do grupo:
 
-Rafael Ramos
-Marcus Leandro
-Arthur Lanna
-Samuel Rocha
+* Rafael Ramos 
+* Marcus Leandro
+* Arthur Lanna
+* Samuel Rocha
