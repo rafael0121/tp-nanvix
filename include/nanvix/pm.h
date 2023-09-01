@@ -207,6 +207,21 @@
 		/**@}*/
 	};
 
+	/*struct do processo*/
+	struct process_buf {
+        	pid_t pid;
+        	char name[NAME_MAX];
+        	unsigned state;
+        	int priority;
+			int counter;
+        	unsigned utime;
+        	unsigned ktime;
+	};
+
+	/*Assinatura de funcao*/
+	extern void do_get_process_info(struct process *proc, struct process_buf *buf);
+	extern int get_process_info(pid_t pid_id, struct process_buf *buf);
+
 	/* Forward definitions. */
 	EXTERN void bury(struct process *);
 	EXTERN void die(int);

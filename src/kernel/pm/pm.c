@@ -125,3 +125,19 @@ PUBLIC void pm_init(void)
 
 	enable_interrupts();
 }
+
+/**
+ * Funcao de Kernel para visualizar informacoes acerca de determinado processo
+*/
+PUBLIC void do_get_process_info(struct process *proc, struct process_buf *buf) {
+
+	buf->pid = proc->pid;
+	for(int i=0; i<NAME_MAX; i++) {
+		buf->name[i] = proc->name[i];
+	}
+	buf->state = proc->state;
+	buf->priority = proc->priority;
+	buf->counter = proc->counter;
+	buf->utime = proc->utime;
+	buf->ktime = proc->ktime;
+}
