@@ -43,10 +43,11 @@
 .PHONY: clear
 .PHONY: nim
 .PHONY: sleep
+.PHONY: getinfo
 
 # Builds everything.
 all: cat chgrp chmod chown cp echo kill ln login ls mv nice pwd rm stat sync \
-	 touch tsh ps clear nim sleep
+	 touch tsh ps clear nim sleep getinfo
 
 # Builds cat.
 cat: 
@@ -144,6 +145,8 @@ nim:
 sleep: 
 	$(CC) $(CFLAGS) $(LDFLAGS) -D TESTE sleep/*.c -o $(UBINDIR)/sleep $(LIBDIR)/libc.a
 
+getinfo:
+	$(CC) $(CFLAGS) $(LDFLAGS) getinfo/*.c -o $(UBINDIR)/getinfo $(LIBDIR)/libc.a
 
 # Clean compilation files.
 clean:
