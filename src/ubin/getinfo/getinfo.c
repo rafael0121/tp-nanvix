@@ -12,8 +12,7 @@ pid_t pid = 0;
 
 static void version(void)
 {
-	printf("get_process_info (Trabalho de SO) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
-	printf("Sem Copyright(C), pode copiar XD\n");
+	printf("get_process_info (TP1 - Sistemas Operacionais - PUC Minas) %d.%d\n\n", VERSION_MAJOR, VERSION_MINOR);
 	printf("This is free software under the ");
 	printf("GNU General Public License Version 3.\n");
 	printf("There is NO WARRANTY, to the extent permitted by law.\n\n");
