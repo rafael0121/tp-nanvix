@@ -10,7 +10,7 @@ int get_process_info(pid_t pid, struct process_buf *buf)
 	(
 		"int $0x80"
 		: "=a" (ret)
-		: "0" (NR_get_process_info),
+		: "0" (NR_getinfo),
 		  "b" (pid),
 		  "c" (buf) 
 	);
