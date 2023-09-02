@@ -29,7 +29,7 @@
 	#include <signal.h>
 	#include <ustat.h>
 	#include <utime.h>
-  #include <nanvix/pm.h>
+ 	#include <nanvix/pm.h>
 
 	/* Number of system calls. */
 	#define NR_SYSCALLS 52
@@ -86,7 +86,7 @@
  	#define NR_semget   48
  	#define NR_semctl   49
  	#define NR_semop    50
-  #defibe NR_getinfo  51
+  	#define NR_getinfo  51
 
 #ifndef _ASM_FILE_
 
