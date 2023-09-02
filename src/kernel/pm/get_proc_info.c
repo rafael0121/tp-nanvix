@@ -11,12 +11,10 @@ int sys_get_process_info(pid_t pid, struct process_buf *buf)
 {	
 	struct process *proc; 
 	
-
-
 	for (proc = FIRST_PROC-1; proc <= LAST_PROC; proc++)
-  {
+	{
 		if (pid == proc->pid)
-    {
+		{
 			do_get_process_info(proc, buf);	
 			return 0;
 		}
