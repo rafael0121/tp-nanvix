@@ -3,7 +3,7 @@ Implementa no Nanvix uma chamada de sistema que coloca em um buffer informaçõe
 
 Integrantes do grupo:
 
-* Rafael Ramos 
-* Marcus Leandro
-* Arthur Lanna
-* Samuel Rocha
+* Rafael Ramos -> Gerência do Projeto, criação do programa utilitário e correção de bugs.
+* Marcus Leandro -> Criação da função que busca na tabela de processos o processo com o PID solicitado.
+* Arthur Lanna -> Criação da função Trap responsável pela troca de contexto, modo usuário para modo Kernel.
+* Samuel Rocha -> Criação da chamada de sistema resposável por chamar a função que busca o processo.
