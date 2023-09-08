@@ -4,7 +4,7 @@ Implmenta um sistema de fila (first in first out) de prioridades para o escalona
 # TP01-getprocessinfo
 Implementa no Nanvix uma chamada de sistema que coloca em um buffer informações de um processo indicado pelo seu PID.
 
-Integrantes do grupo:
+# Integrantes do grupo:
 
 * Rafael Ramos
 * Marcus Leandro
