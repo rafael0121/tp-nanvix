@@ -21,7 +21,7 @@ int sys_get_process_info(pid_t pid, struct process_buf *buf)
 
 		if (pid == proc->pid)
 		{
-			if (!chkmem(buf, sizeof(proc), MAY_WRITE))
+			if (!chkmem(buf, sizeof(struct process_buf), MAY_WRITE))
 				return (-1);
 			
 			do_get_process_info(proc, buf);	
