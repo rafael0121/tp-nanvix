@@ -23,6 +23,8 @@
 #include <nanvix/hal.h>
 #include <nanvix/pm.h>
 #include <signal.h>
+#include <math.h>
+#include <nanvix/klib.h>
 
 /**
  * @brief Schedules a process to execution.
@@ -57,6 +59,13 @@ PUBLIC void resume(struct process *proc)
 	/* Resume only if process has stopped. */
 	if (proc->state == PROC_STOPPED)
 		sched(proc);
+}
+
+
+//Get real priority
+PUBLIC int get_realprio(struct process *proc){
+	int counter_prio = (proc->counter * proc->counter) >> 6;
+	return proc->priority + proc->nice + counter_prio;
 }
 
 /**
@@ -98,7 +107,7 @@ PUBLIC void yield(void)
 		 * Process with higher
 		 * waiting time found.
 		 */
-		if (p->counter > next->counter)
+		if (get_realprio(p) > get_realprio(next))
 		{
 			next->counter++;
 			next = p;
@@ -111,7 +120,7 @@ PUBLIC void yield(void)
 		else
 			p->counter++;
 	}
-
+	
 	/* Switch to next process. */
 	next->priority = PRIO_USER;
 	next->state = PROC_RUNNING;
