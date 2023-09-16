@@ -22,9 +22,10 @@
 .PHONY: init
 .PHONY: shutdown
 .PHONY: test
+.PHONY: stress
 
 # Builds everything.
-all: foobar init shutdown test
+all: foobar init shutdown test stress
 
 # Builds foobar.
 foobar:
@@ -41,6 +42,11 @@ shutdown:
 # Builds test.
 test:
 	$(CC) $(CFLAGS) $(LDFLAGS) test/*.c -o $(SBINDIR)/test $(LIBDIR)/libc.a
+
+# Builds stress.
+stress:
+	$(CC) $(CFLAGS) $(LDFLAGS) stress/*.c -o $(SBINDIR)/stress $(LIBDIR)/libc.a
+	
 	
 # Cleans compilations files.
 clean:
@@ -48,4 +54,5 @@ clean:
 	@rm -f $(SBINDIR)/init
 	@rm -f $(SBINDIR)/shutdown
 	@rm -f $(SBINDIR)/test
+	@rm -f $(SBINDIR)/stress
 	
