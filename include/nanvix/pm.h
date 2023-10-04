@@ -216,6 +216,7 @@
 			int counter;
         	unsigned utime;
         	unsigned ktime;
+		int nice;
 	};
 
 	/*Assinatura de funcao*/
