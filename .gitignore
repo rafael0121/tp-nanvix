@@ -53,3 +53,9 @@ tools/run/bochsrc.txt
 # Exceptions.
 !doc/paper/img/*.pdf
 !doc/paper/*.pdf
+
+# Evitar bugs de compilacao
+doc/
+doxygen/
+lib/
+tools/
