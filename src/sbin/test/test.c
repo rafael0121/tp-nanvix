@@ -226,9 +226,14 @@ static void work_io(void)
  *
  * @return Zero if passed on test, and non-zero otherwise.
  */
-static int sched_test0(void)
+static int sched_test0(clock_t *ttotal)
 {
 	pid_t pid;
+
+	struct tms timing; /* Timing information. */
+	clock_t t0, t1;  
+
+	t0 = times(&timing);
 
 	pid = fork();
 
@@ -244,6 +249,10 @@ static int sched_test0(void)
 	}
 
 	wait(NULL);
+	
+	t1 = times(&timing);
+
+	*ttotal = t1-t0;
 
 	return (0);
 }
@@ -256,9 +265,14 @@ static int sched_test0(void)
  *
  * @returns Zero if passed on test, and non-zero otherwise.
  */
-static int sched_test1(void)
+static int sched_test1(clock_t *ttotal)
 {
 	pid_t pid;
+
+	struct tms timing; /* Timing information. */
+	clock_t t0, t1;  
+
+	t0 = times(&timing);
 
 	pid = fork();
 
@@ -282,6 +296,10 @@ static int sched_test1(void)
 	}
 
 	wait(NULL);
+	
+	t1 = times(&timing);
+
+	*ttotal = t1-t0;
 
 	return (0);
 }
@@ -293,9 +311,14 @@ static int sched_test1(void)
  *
  * @returns Zero if passed on test, and non-zero otherwise.
  */
-static int sched_test2(void)
+static int sched_test2(clock_t *ttotal)
 {
 	pid_t pid[4];
+
+	struct tms timing; /* Timing information. */
+	clock_t t0, t1;  
+
+	t0 = times(&timing);
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -335,6 +358,10 @@ static int sched_test2(void)
 			wait(NULL);
 		}
 	}
+	
+	t1 = times(&timing);
+
+	*ttotal = t1-t0;
 
 	return (0);
 }
@@ -346,10 +373,15 @@ static int sched_test2(void)
  *
  * @returns Zero if passed on test, and non-zero otherwise.
  */
-static int sched_test3(void)
+static int sched_test3(clock_t *ttotal)
 {
 	pid_t child;
 	pid_t father;
+
+	struct tms timing; /* Timing information. */
+	clock_t t0, t1;  
+
+	t0 = times(&timing);
 
 	father = getpid();
 
@@ -365,6 +397,10 @@ static int sched_test3(void)
 	/* Die. */
 	if (getpid() != father)
 		_exit(EXIT_SUCCESS);
+	
+	t1 = times(&timing);
+
+	*ttotal = t1-t0;
 
 	return (0);
 }
@@ -639,13 +675,26 @@ int main(int argc, char **argv)
 		/* Scheduling test. */
 		else if (!strcmp(argv[i], "sched"))
 		{
+			clock_t ttotal, tparcial;
+
 			printf("Scheduling Tests\n");
+
 			printf("  waiting for child  [%s]\n",
-				(!sched_test0()) ? "PASSED" : "FAILED");
+				(!sched_test0(&tparcial)) ? "PASSED" : "FAILED");
+			printf("  	Elapsed time: %d\n", tparcial);
+			ttotal += tparcial;
+
 			printf("  dynamic priorities [%s]\n",
-				(!sched_test1()) ? "PASSED" : "FAILED");
+				(!sched_test1(&tparcial)) ? "PASSED" : "FAILED");
+			printf("  	Elapsed time: %d\n", tparcial);
+			ttotal += tparcial;
+
 			printf("  scheduler stress   [%s]\n",
-				(!sched_test2() && !sched_test3()) ? "PASSED" : "FAILED");
+				(!sched_test2(&tparcial) && !sched_test3(&tparcial)) ? "PASSED" : "FAILED");
+			printf("  	Elapsed time: %d\n", tparcial);
+			ttotal += tparcial;
+
+			printf("\n  Total elapsed time: %d\n", ttotal);
 		}
 
 		/* IPC test. */
