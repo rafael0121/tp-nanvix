@@ -65,7 +65,7 @@ PUBLIC void resume(struct process *proc)
 //Get real priority
 PUBLIC int get_realprio(struct process *proc){
 	int counter_prio = proc->counter >> 1;
-	return (-proc->priority) + proc->nice + counter_prio;
+	return -proc->priority - proc->nice + counter_prio;
 }
 
 /**
