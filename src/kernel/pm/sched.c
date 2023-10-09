@@ -61,11 +61,11 @@ PUBLIC void resume(struct process *proc)
 		sched(proc);
 }
 
-
-//Get real priority
+/**
+ * @brief Soma as prioridades do processo e retorna a prioridade total.
+ */
 PUBLIC int get_realprio(struct process *proc){
-	int counter_prio = proc->counter >> 1;
-	return -(proc->priority) -(proc->nice) + counter_prio;
+	return proc->priority + proc->nice - counter_prio;
 }
 
 /**
@@ -104,10 +104,10 @@ PUBLIC void yield(void)
 			continue;
 
 		/*
-		 * Process with higher
-		 * waiting time found.
+		 * Processo com menor valor é
+		 * mais prioritário.
 		 */
-		if (get_realprio(p) > get_realprio(next))
+		if (get_realprio(p) < get_realprio(next))
 		{
 			next->counter++;
 			next = p;
