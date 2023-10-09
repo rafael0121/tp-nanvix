@@ -10,6 +10,12 @@ O novo algoritmo construído baseia-se na ideia de que quanto menor o valor num�
 
 Essa "fórmula" foi construída pensando-se no seguinte preceito: enquanto os valores de Priority e Nice, quando menores, representam uma prioridade maior em relação ao projeto, o valor de Counter segue a ideia contrária. Quanto maior o valor de Counter, mais essa variável aumenta a prioridade do processo ao qual ela está relacionada.
 
+## O que são essas variáveis de prioridade?
+
+- Counter: é o valor que indica há quanto tempo um processo está esperando na fila para ser executado.
+- Priority: é o valor que indica a prioridade absoluta de um processo. Quanto menor o priority, maior é a prioridade do processo. O priority é calculado pelo sistema operacional, levando em conta o nice e outros fatores, como o tempo de espera e o tipo de processo.
+- Nice: é o valor que indica a prioridade relativa de um processo. Quanto maior o nice, menor é a prioridade do processo. O nice pode ser ajustado pelo usuário ou pelo sistema operacional, de acordo com critérios de otimização.
+
 Sabendo-se que a ideia do grupo foi obter um novo valor que, quanto menor ele for, representa uma prioridade maior para o processo, torna-se incoerente obter esse valor por meio de uma soma crua de todos esses três valores. Como o Counter atribui ao processo uma prioridade maior quando seu valor é maior, isso seria um problema na "fórmula" pois cenários como o seguinte poderiam acontecer: 
 
 > Um processo com alto valor Counter e valores pequenos de Nice e Priority (esses últimos mostrando ao Nanvix que o tal processo deveria ter alta prioridade de execução) poderia ser executado depois de um processo com valor de Counter bem menor e valores maiores de Nice e Priority do que o suposto processo anteriormente citado.
