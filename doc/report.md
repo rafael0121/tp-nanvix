@@ -24,10 +24,25 @@ O cenário descrito não é ideal. Para resolver esse problema, a "fórmula" cri
 
 ## 1. Resultados de tempo utilizando o escalonador padrão do Nanvix (Round-Robin)
 
+Resultado dos testes com o programa: `test sched`
+
+Espera por filhos: 0 ms
+Prioridades dinâmicas: 700 ms
+Stress no escalonador: 0 ms
+
+O tempo total no teste realizado foi de 700 ms
 
 
 ## 2. Resultados de tempo utilizando o novo escalonador (Fila de Prioridades)
 
+Resultado dos testes com o programa: `test sched`
+
+Espera por filhos: 0 ms
+Prioridades dinâmicas: 400 ms
+Stress no escalonador: 0 ms
+
+O tempo total no teste realizado foi de 400 ms
+
 ## Conclusão
 
-Como os tempos obtidos nos testes nos dois cenários podemos constatar uma diferença de desempenho entre as formas de se escalonar. Ao utilizar o Round-Robin, obteve-se um desempenho melhor em relação a Fila de Prioridades. Essa melhora de desempenho se deve ao fato de que a Fila de Prioridades executa mais comparações para definir qual processo é mais prioritário. O ponto positivo da Fila de Prioridades é a garantia de haver uma justiça mais sólida em determinar a ordem de execução dos processos, pois na Fila de Prioridades garantimos que o sistema vai considerar as três variáveis no escalonamento. 
+Como os tempos obtidos nos testes nos dois cenários podemos constatar uma diferença de desempenho entre as formas de se escalonar. Ao utilizar o Round-Robin, obteve-se um desempenho pior em relação a Fila de Prioridades. Essa melhora de desempenho se deve ao fato de que a Fila de Prioridades executa mais comparações para definir qual processo é mais prioritário. O ponto é que a Fila de Prioridades garante haver uma justiça mais sólida em determinar a ordem de execução dos processos, pois na Fila de Prioridades garantimos que o sistema vai considerar as três variáveis no escalonamento. Essa garantia nas prioridades gerencia melhor o tempo no escalonamento, fazendo o custo de comparações maior compensar com a gerência no escalonamento.
