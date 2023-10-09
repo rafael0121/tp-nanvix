@@ -107,7 +107,7 @@ PUBLIC void yield(void)
 		 * Processo com menor valor é
 		 * mais prioritário.
 		 */
-		if (get_realprio(p) < get_realprio(next))
+		if (get_realprio(p) <= get_realprio(next))
 		{
 			next->counter++;
 			next = p;
