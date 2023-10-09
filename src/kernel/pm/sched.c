@@ -65,7 +65,7 @@ PUBLIC void resume(struct process *proc)
  * @brief Soma as prioridades do processo e retorna a prioridade total.
  */
 PUBLIC int get_realprio(struct process *proc){
-	return proc->priority + proc->nice - counter_prio;
+	return proc->priority + proc->nice - proc->counter;
 }
 
 /**
