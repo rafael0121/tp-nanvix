@@ -22,3 +22,6 @@ O cenário descrito não é ideal. Para resolver esse problema, a "fórmula" cri
 
 ## 2. Resultados de tempo utilizando o novo escalonador (Fila de Prioridades)
 
+## Conclusão
+
+Como os tempos obtidos nos testes nos dois cenários podemos constatar uma diferença de desempenho entre as formas de se escalonar. Ao utilizar o Round-Robin, obteve-se um desempenho melhor em relação a Fila de Prioridades. Essa melhora de desempenho se deve ao fato de que a Fila de Prioridades executa mais comparações para definir qual processo é mais prioritário. O ponto positivo da Fila de Prioridades é a garantia de haver uma justiça mais sólida em determinar a ordem de execução dos processos, pois na Fila de Prioridades garantimos que o sistema vai considerar as três variáveis no escalonamento. 
