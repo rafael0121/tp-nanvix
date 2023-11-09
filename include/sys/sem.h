@@ -19,10 +19,16 @@
 
 #ifndef SEM_H_
 #define SEM_H_
+    
+    #include <nanvix/const.h>
+    #include <nanvix/pm.h>
 
 	/**
 	 * @brief Comand values for semaphores.
 	 */
+
+    #define sem_t unsigned
+
 	/**@{*/
 	#define GETVAL   0 /**< Returns the value of a semaphore. */
 	#define SETVAL   1 /**< Sets the value of a semaphore.    */
@@ -33,5 +39,36 @@
 	extern int semget(unsigned);
 	extern int semctl(int, int, int);
 	extern int semop(int, int);
+
+    //Lista de processos associados ao semáfaro
+    struct node_proc{
+        struct process *proc;
+        struct node_proc *next;
+    };
+
+    struct proc_assoc_list{
+        struct node_proc *root;
+        struct node_proc *tail;
+        unsigned size;
+    };
+    
+    // Definições do sistema
+    struct semaphore{
+        sem_t key;
+        int value;
+        struct proc_assoc_list assoc_list; 
+        struct sem *next;
+    };
+
+    // Lista de semáforos.
+    struct semaphore_list{
+        struct semaphore *root;
+        struct semaphore *tail;
+        unsigned size;
+    };
+    
+    EXTERN struct semaphore_list sem_list;
+
+    EXTERN void sem_init();
 
 #endif /* SEM_H_ */
