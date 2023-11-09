@@ -52,23 +52,24 @@
         unsigned size;
     };
     
-    // Definições do sistema
+    // Estrutura do semáfaro 
     struct semaphore{
-        sem_t key;
-        int value;
-        struct proc_assoc_list assoc_list; 
-        struct sem *next;
+        sem_t key; /* ID do semáforo. */
+        int value; /* Valor do semáforo */
+        struct proc_assoc_list assoc_list; /* Lista de processos associados*/ 
+        struct sem *next; /* Próximo semáforo na lista encadeada */
     };
 
-    // Lista de semáforos.
+    // Estrutura da lista.
     struct semaphore_list{
-        struct semaphore *root;
-        struct semaphore *tail;
-        unsigned size;
+        struct semaphore *root; /*Ponteiro para o primeiro samáforo na lista*/
+        struct semaphore *tail; /* Ponteiro para o último semáforo na lista */
+        unsigned size; /* Tamanho da lista */
     };
-    
-    EXTERN struct semaphore_list sem_list;
+    // Declaração da lista de semafóros.
+    EXTERN struct semaphore_list sem_list;  
 
+    // Declaração da função que inicializa o semáforo.
     EXTERN void sem_init();
 
 #endif /* SEM_H_ */
