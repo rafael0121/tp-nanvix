@@ -10,7 +10,7 @@ int create_semaphore(unsigned key)
 
     for (int i = 0; i < SEM_MAX; i++){
         if (semtab[i].state == INACTIVE){
-            newsem = semtab[i];
+            newsem = &semtab[i];
             break;
         }
     }
@@ -18,11 +18,11 @@ int create_semaphore(unsigned key)
     if (newsem == NULL)
         return -1;
     
-    newsem.key = key;
-    newsem.value = 1;
-    newsem.state = ACTIVE;
+    newsem->key = key;
+    newsem->value = 1;
+    newsem->state = ACTIVE;
 
-    return newsem.id;
+    return newsem->id;
 }
 
 /**
@@ -32,7 +32,7 @@ PUBLIC int sys_semget(sem_t key)
 {   
     // Busca o semáforo com o key informado.
     for (int i = 0; i < SEM_MAX; i++) {
-        if (semtab[i].state == ACTIVE){ 
+        if (semtab[i].state == ACTIVE) 
             if (semtab[i].key == key)
                 return key;
     }
