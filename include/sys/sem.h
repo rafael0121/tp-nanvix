@@ -29,6 +29,9 @@
 
     #define sem_t unsigned
 
+    #define ACTIVE 1
+    #define INACTIVE 0
+
 	/**@{*/
 	#define GETVAL   0 /**< Returns the value of a semaphore. */
 	#define SETVAL   1 /**< Sets the value of a semaphore.    */
@@ -40,34 +43,16 @@
 	extern int semctl(int, int, int);
 	extern int semop(int, int);
 
-    //Lista de processos associados ao semáfaro
-    struct node_proc{
-        struct process *proc;
-        struct node_proc *next;
-    };
-
-    struct proc_assoc_list{
-        struct node_proc *root;
-        struct node_proc *tail;
-        unsigned size;
-    };
-    
     // Estrutura do semáfaro 
     struct semaphore{
-        sem_t key; /* ID do semáforo. */
+        int id;    /* Identificador do semáforo */
+        sem_t key; /* Key do semáforo. */
         int value; /* Valor do semáforo */
-        struct proc_assoc_list assoc_list; /* Lista de processos associados*/ 
-        struct sem *next; /* Próximo semáforo na lista encadeada */
+        int state; /* Estado do semáforo */
     };
 
-    // Estrutura da lista.
-    struct semaphore_list{
-        struct semaphore *root; /*Ponteiro para o primeiro samáforo na lista*/
-        struct semaphore *tail; /* Ponteiro para o último semáforo na lista */
-        unsigned size; /* Tamanho da lista */
-    };
     // Declaração da lista de semafóros.
-    EXTERN struct semaphore_list sem_list;  
+    EXTERN struct semaphore semtab[SEM_MAX];  
 
     // Declaração da função que inicializa o semáforo.
     EXTERN void sem_init();
