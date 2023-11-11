@@ -45,10 +45,11 @@
 
     // Estrutura do semáfaro 
     struct semaphore{
-        int id;    /* Identificador do semáforo */
-        sem_t key; /* Key do semáforo. */
-        int value; /* Valor do semáforo */
-        int state; /* Estado do semáforo */
+            int id;    /* Identificador do semáforo */
+            sem_t key; /* Key do semáforo. */
+            int value; /* Valor do semáforo. */
+            int state; /* Estado do semáforo. */
+        int procusing; /* Quantidade de processos usando o semáforo. */
     };
 
     // Declaração da lista de semafóros.
