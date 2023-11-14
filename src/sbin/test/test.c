@@ -532,6 +532,113 @@ int semaphore_test3(void)
 	return (0);
 }
 
+
+
+#define READ_ITEM(a, b)                               \
+{                                                    \
+	assert(lseek((a), 0, SEEK_SET) != -1);           \
+	assert(read((a), &(b), sizeof(b)) == sizeof(b)); \
+}
+
+#define CHANGE_ITEM(a, b)                               \
+{                                                    \
+	assert(lseek((a), 0, SEEK_SET) != -1);           \
+	assert(read((a), &(b), sizeof(b)) == sizeof(b)); \
+}
+
+/**
+ * @brief Writers-Readers problem with semaphores.
+ *
+ * @details Reproduces Writers-readers scenario using semaphores.
+ *
+ * @returns Zero if passed on test, and non-zero otherwise.
+ */
+
+int semaphore_test2(void)
+{
+    int buffer_fd;              /* Buffer file descriptor.    */
+	int writer;                 /* Semáforo escritores.       */
+    int mutex;                  /* Mutex.                     */
+	int buff_readers = 0;       /* Number of readers in buff. */
+	const int BUFFER_SIZE = 32; /* Buffer size.               */
+	const int NR_ITEMS = 512;   /* Number of items to send.   */
+    
+    /* Criar buffer.*/
+	buffer_fd = open("buffer", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	if (buffer_fd < 0)
+		return (-1);
+
+    /* Criar semáforos. */
+	SEM_CREATE(writer, 1);
+	SEM_CREATE(mutex, 2);
+
+    SEM_INIT(writer, 1);
+    SEM_INIT(mutex, 1);
+
+    if ((pid = fork()) < 0)
+		return (-1);
+
+	/* Leitor */
+    else if (pid == 0) {
+
+        fork();
+        fork();
+
+        while (true) {
+            
+		    int pos = 2;
+
+            /* Entra na Região Crítica */
+            SEM_DOWN(mutex);
+            buff_readers++; 
+
+            if (buff_readers == 1) {
+                /* Colocar o escritor em sleep */
+                SEM_DOWN(writer);
+            }
+            SEM_UP(mutex);
+            /* Sair */
+
+            /* Lê posição */
+            READ_POS(buffer_fd, pos);
+            
+            /* Entra na Região Crítica */
+            SEM_DOWN(mutex);
+            buff_readers--; 
+
+            /* Acorda o escritor se não houver mais leitores no buffer */
+            if (buff_readers == 0) {
+                SEM_DOWN(sem);
+            }
+            SEM_UP(mutex);
+        }
+    }
+
+	/* Writer */
+	else
+	{
+		int item = 0;
+        
+		do
+		{
+		    int pos = NR_ITEMS % BUFFER_SIZE;
+
+			SEM_DOWN(writer);
+
+			CHANGE_ITEM(buffer_fd, item, pos);
+
+			SEM_UP(writer);
+
+            i++;
+
+		} while (i < NR_ITEMS);
+	}
+    
+
+    close(buffer_fd);
+	unlink("buffer");
+}
+
 /*============================================================================*
  *                                FPU test                                    *
  *============================================================================*/
