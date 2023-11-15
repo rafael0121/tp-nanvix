@@ -14,8 +14,15 @@ int getval (int semid)
  * @brief: Define o valor do semáforo como sendo val.
  */
 int setval (int semid, int val){
-
-
+    
+    // Busca o semáforo com o id informado.
+    for (int i = 0; i < SEM_MAX; i++) {
+        if (semtab[i].state == ACTIVE) 
+            if (semtab[i].id == semid) {
+                semtab[i].value = val;
+                break;
+            }
+    }
 }
 
 /**
