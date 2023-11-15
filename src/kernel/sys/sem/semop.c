@@ -1,6 +1,7 @@
 #include <nanvix/const.h>
 #include <sys/sem.h>
 
+<<<<<<< HEAD
 int up (int semid)
 {
 
@@ -9,6 +10,7 @@ int up (int semid)
 
 int down (int semid)
 {
+
 
 }
 
