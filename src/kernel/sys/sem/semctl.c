@@ -6,8 +6,14 @@
  */
 int getval (int semid)
 {
-
-
+    for (int i = 0; i < SEM_MAX; i++) {
+        if (semtab[i].state == ACTIVE) { 
+            if (semtab[i].id == semid) {
+                return semtab[i].value;
+            }
+        }
+    }
+    return -1;
 }
 
 /**
@@ -26,12 +32,20 @@ int setval (int semid, int val){
 }
 
 /**
- * @brief: Retorna o valor corrente do semáforo
+ * @brief: Diminui o valor do semáforo e destrói ele se possível
  */
 int ipc_rmid (int semid)
 {
-    
-
+    for (int i = 0; i < SEM_MAX; i++) {
+        if (semtab[i].state == ACTIVE) { 
+            if (semtab[i].id == semid) {
+                return semtab[i].procusing--;
+            }
+            if (semtab[i].procusing == 0) {
+                semtab[i].state = INACTIVE;
+            }
+        }
+    }
 }
 
 /**
