@@ -45,11 +45,13 @@
 
     // Estrutura do semáfaro 
     struct semaphore{
-            int id;    /* Identificador do semáforo */
-            sem_t key; /* Key do semáforo. */
-            int value; /* Valor do semáforo. */
-            int state; /* Estado do semáforo. */
-        int procusing; /* Quantidade de processos usando o semáforo. */
+            int id;                 /* Identificador do semáforo */
+            sem_t key;              /* Key do semáforo. */
+            int value;              /* Valor do semáforo. */
+            int state;              /* Estado do semáforo. */
+            int procpriority;       /* Prioridade do próximo processo */
+            int procusing;          /* Prioridade do próximo processo */
+            structhprocess **chain; /* Cadeia de processos associados ao semáforo */
     };
 
     // Declaração da lista de semafóros.
@@ -57,5 +59,6 @@
 
     // Declaração da função que inicializa o semáforo.
     EXTERN void sem_init();
+
 
 #endif /* SEM_H_ */
