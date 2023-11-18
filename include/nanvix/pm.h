@@ -197,7 +197,7 @@
     	 * @name Scheduling information
     	 */
 		/**@{*/
-    	unsigned state;          i   /**< Current state.                             */
+    	unsigned state;              /**< Current state.                             */
     	int counter;                 /**< Remaining quantum.                         */
     	int priority;                /**< Process priorities.                        */
     	int nice;                    /**< Nice for scheduling.                       */

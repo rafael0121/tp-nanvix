@@ -52,16 +52,16 @@ int ipc_rmid (int semid)
                 int pos_table = sem->pos % 16; /* Descobre a posição do semáforo na tabela */
                 int comp = 1;
     
-                comp << pos_table; /* Posiciona o valor 1 no bit que será alterado */
+                comp = comp << pos_table; /* Posiciona o valor 1 no bit que será alterado */
 
                 int *b = &curr_proc->shared_sem[table]; /* Pega a tabela que o semáforo está */
 
-                *b = b & ~comp /* Atribui o valor da tabela a operação de set bit*/ 
+                *b = *b & (~comp); /* Atribui o valor da tabela a operação de set bit*/ 
 
                 sem->procusing--;
 
-                if (sem.procusing == 0) {
-                    semtab[i].state = INACTIVE;
+                if (sem->procusing == 0) {
+                    sem->state = INACTIVE;
                     return 0;
                 }
                 return 0;

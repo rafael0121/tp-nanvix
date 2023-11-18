@@ -2,9 +2,30 @@
 #include <sys/sem.h>
 
 /**
+ *  @brief Associa o processo a corrente de processos
+ *  do semáforo.
+ */
+int associate_semaphore (struct semaphore *sem)
+{
+    int table = sem->pos / 16; /* Encontra em qual tabela o semáforo está */
+    int pos_table = sem->pos % 16; /* Descobre a posição do semáforo na tabela */
+    int comp = 1;
+
+    comp = comp << pos_table; /* Posiciona o valor 1 no bit que será alterado */
+
+    int *b = &curr_proc->shared_sem[table]; /* Pega a tabela que o semáforo está */
+
+    *b = *b | comp; /* Atribui o valor da tabela a operação de set bit */ 
+
+    sem->procusing++;
+ 
+    return sem->id;
+}
+
+/**
  *  @brief Cria um novo semáforo.
  */
-int create_semaphore(unsigned key)
+int create_semaphore (unsigned key)
 {
     struct semaphore *newsem = NULL;
 
@@ -27,27 +48,6 @@ int create_semaphore(unsigned key)
     associate_semaphore(newsem);
 
     return newsem->id;
-}
-
-/**
- *  @brief Associa o processo a corrente de processos
- *  do semáforo.
- */
-int associate_semaphore (struct semaphore *sem)
-{
-    int table = sem->pos / 16; /* Encontra em qual tabela o semáforo está */
-    int pos_table = sem->pos % 16; /* Descobre a posição do semáforo na tabela */
-    int comp = 1;
-
-    comp << pos_table; /* Posiciona o valor 1 no bit que será alterado */
-
-    int *b = &curr_proc->shared_sem[table]; /* Pega a tabela que o semáforo está */
-
-    *b = b | comp /* Atribui o valor da tabela a operação de set bit */ 
-
-    sem->procusing++;
- 
-    return sem->id;
 }
 
 /**

@@ -23,7 +23,7 @@ int check_valid (struct semaphore *sem)
     int pos_table = sem->pos % 16;
     int comp = 1;
     
-    comp << pos_table;
+    comp = comp << pos_table;
 
     int b = curr_proc->shared_sem[table];
     
@@ -34,8 +34,3 @@ int check_valid (struct semaphore *sem)
     return 0;
 }
 
-int desassociate_semaphore (int semid)
-{
-
-
-}
