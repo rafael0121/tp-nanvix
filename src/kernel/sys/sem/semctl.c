@@ -6,10 +6,11 @@
  */
 int getval (int semid)
 {
-
     for (int i = 0; i < SEM_MAX; i++) {
         if (semtab[i].state == ACTIVE) { 
             if (semtab[i].id == semid) {
+                if (check_valid(&semtab[i]) == -1) return -1;
+
                 return semtab[i].value;
             }
         }
@@ -26,6 +27,7 @@ int setval (int semid, int val)
     for (int i = 0; i < SEM_MAX; i++) {
         if (semtab[i].state == ACTIVE) 
             if (semtab[i].id == semid) {
+                if (check_valid(&semtab[i]) == -1) return -1;
                 semtab[i].value = val;
                 return 0;
             }
@@ -42,9 +44,10 @@ int ipc_rmid (int semid)
     for (int i = 0; i < SEM_MAX; i++) {
         if (semtab[i].state == ACTIVE) { 
             if (semtab[i].id == semid) {
-                // Se nenhum processo estiver usando a tavela
-                    
-                semaphore *sem = &semtab[i]; /* Cria um ponteiro para o semáforo */
+
+                if (check_valid(&semtab[i]) == -1) return -1;
+
+                struct semaphore *sem = &semtab[i]; /* Cria um ponteiro para o semáforo */
                 int table = sem->pos / 16; /* Encontra em qual tabela o semáforo está */
                 int pos_table = sem->pos % 16; /* Descobre a posição do semáforo na tabela */
                 int comp = 1;
@@ -76,7 +79,6 @@ int ipc_rmid (int semid)
 PUBLIC int sys_semctl (int semid, int cmd, int val)
 {
     // Verifica se o processo atual pode realizar operações no semáforo.
-    if (check_valid(semid) = -1) return -1;
 
     switch (cmd) {
         case GETVAL:
