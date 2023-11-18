@@ -17,7 +17,7 @@ void sem_init()
  *  @brief Verifica se o processo está associado ao
  *  semáforo.
  */
-int check_valid (semaphore *sem)
+int check_valid (struct semaphore *sem)
 {
     int table = sem->pos / 16;
     int pos_table = sem->pos % 16;
@@ -32,4 +32,10 @@ int check_valid (semaphore *sem)
         return -1;
 
     return 0;
+}
+
+int desassociate_semaphore (int semid)
+{
+
+
 }
