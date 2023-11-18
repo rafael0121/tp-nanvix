@@ -27,8 +27,6 @@
 	 * @brief Comand values for semaphores.
 	 */
 
-    #define sem_t unsigned
-
     #define ACTIVE 1
     #define INACTIVE 0
 
@@ -46,12 +44,12 @@
     // Estrutura do semáfaro 
     struct semaphore{
             int id;                 /* Identificador do semáforo */
+            int pos;                 /* Identificador do semáforo */
             sem_t key;              /* Key do semáforo. */
             int value;              /* Valor do semáforo. */
             int state;              /* Estado do semáforo. */
             int procpriority;       /* Prioridade do próximo processo */
-            int procusing;          /* Prioridade do próximo processo */
-            structhprocess **chain; /* Cadeia de processos associados ao semáforo */
+            int procusing;
     };
 
     // Declaração da lista de semafóros.
@@ -59,6 +57,9 @@
 
     // Declaração da função que inicializa o semáforo.
     EXTERN void sem_init();
+
+    // Declaração da função de checagem de permissão do semáforo.
+    EXTERN int check_valid (int);
 
 
 #endif /* SEM_H_ */
