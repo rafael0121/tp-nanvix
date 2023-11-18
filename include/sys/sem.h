@@ -59,7 +59,7 @@
     EXTERN void sem_init();
 
     // Declaração da função de checagem de permissão do semáforo.
-    EXTERN int check_valid (int);
+    EXTERN int check_valid (struct semaphore);
 
 
 #endif /* SEM_H_ */
