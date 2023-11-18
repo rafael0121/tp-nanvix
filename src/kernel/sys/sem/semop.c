@@ -1,17 +1,32 @@
 #include <nanvix/const.h>
 #include <sys/sem.h>
 
-<<<<<<< HEAD
 int up (int semid)
-{
-
+{   
+    if (semtab[semid].value == 0)
+        wakeup(sem->chain);
     
+    return 0;
 }
 
 int down (int semid)
 {
+    for (int i = 0; i < SEM_MAX; i++) {
+        if (semtab[i].state == ACTIVE) { 
+            if (semtab[i].id == semid) {
+                if(check_valid(semtab[i]) == -1) return -1;
 
+                while (semtab[i].value == 0) {
+                    sleep(curr_proc->chain, curr_proc->priority);
+                }
 
+                semtab[i].value--;
+                
+                return 0;
+        }
+    }
+ 
+    return -1;
 }
 
 PUBLIC int sys_semop(int semid, int op){
