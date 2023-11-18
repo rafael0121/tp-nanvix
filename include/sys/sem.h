@@ -41,6 +41,8 @@
 	extern int semctl(int, int, int);
 	extern int semop(int, int);
 
+    #define sem_t unsigned 
+
     // Estrutura do semáfaro 
     struct semaphore{
             int id;                 /* Identificador do semáforo */
@@ -59,7 +61,7 @@
     EXTERN void sem_init();
 
     // Declaração da função de checagem de permissão do semáforo.
-    EXTERN int check_valid (struct semaphore);
+    EXTERN int check_valid (struct semaphore *);
 
 
 #endif /* SEM_H_ */
