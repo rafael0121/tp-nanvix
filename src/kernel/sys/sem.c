@@ -28,7 +28,7 @@ int check_valid (semaphore *sem)
     int b = curr_proc->shared_sem[table];
     
     int result = b & comp;
-    if (  == 0)
+    if (result == 0)
         return -1;
 
     return 0;
