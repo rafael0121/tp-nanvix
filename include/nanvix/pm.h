@@ -204,7 +204,7 @@
     	unsigned alarm;              /**< Alarm.                                     */
 		struct process *next;        /**< Next process in a list.                    */
 		struct process **chain;      /**< Sleeping chain.                            */
-        int shared_sem[SEM_MAX / 4]; /**< Tabela de semáforos associados ao processo */ 
+        int shared_sem[SEM_MAX / 16]; /**< Tabela de semáforos associados ao processo */ 
 
 		/**@}*/
 	};

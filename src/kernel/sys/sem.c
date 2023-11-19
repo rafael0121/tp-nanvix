@@ -8,9 +8,12 @@ void sem_init()
     for (int i=0; i<SEM_MAX; i++) {
         semtab[i].state = INACTIVE;
         semtab[i].procusing = 0;
-        semtab[i].id = i;
         semtab[i].pos = i;
+        semtab[i].id = i;
     }
+    int table_num = SEM_MAX / 16;
+    for(int i = 0; i < table_num; i++)
+        curr_proc->shared_sem[i] = 0;
 }
 
 /**
@@ -25,11 +28,13 @@ int check_valid (struct semaphore *sem)
     
     comp = comp << pos_table;
 
-    int b = curr_proc->shared_sem[table];
+    int *b = &curr_proc->shared_sem[table];
     
-    int result = b & comp;
-    if (result == 0)
+    comp = *b & comp;
+
+    if (comp == 0){
         return -1;
+    }
 
     return 0;
 }

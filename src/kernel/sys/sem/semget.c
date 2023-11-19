@@ -6,7 +6,13 @@
  *  do semáforo.
  */
 int associate_semaphore (struct semaphore *sem)
-{
+{   
+    /**
+     * table = 0
+     * pos_table = 0
+     * comp = 1
+     */
+
     int table = sem->pos / 16; /* Encontra em qual tabela o semáforo está */
     int pos_table = sem->pos % 16; /* Descobre a posição do semáforo na tabela */
     int comp = 1;
@@ -18,7 +24,7 @@ int associate_semaphore (struct semaphore *sem)
     *b = *b | comp; /* Atribui o valor da tabela a operação de set bit */ 
 
     sem->procusing++;
- 
+    
     return sem->id;
 }
 
@@ -29,8 +35,8 @@ int create_semaphore (unsigned key)
 {
     struct semaphore *newsem = NULL;
 
-    for (int i = 0; i < SEM_MAX; i++){
-        if (semtab[i].state == INACTIVE){
+    for (int i = 0; i < SEM_MAX; i++) {
+        if (semtab[i].state == INACTIVE) {
             newsem = &semtab[i];
             break;
         }
@@ -45,7 +51,8 @@ int create_semaphore (unsigned key)
     newsem->procpriority = 0;
     newsem->procusing = 0;
     
-    associate_semaphore(newsem);
+    if(associate_semaphore(newsem) == -1)
+        return -1;
 
     return newsem->id;
 }

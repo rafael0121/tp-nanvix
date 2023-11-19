@@ -491,7 +491,7 @@ int semaphore_test3(void)
 	else if (pid == 0)
 	{
 		for (int item = 0; item < NR_ITEMS; item++)
-		{
+		{   
 			SEM_DOWN(empty);
 			SEM_DOWN(mutex);
 
@@ -543,7 +543,7 @@ int semaphore_test3(void)
 #define CHANGE_ITEM(a, b)                               \
 {                                                    \
 	assert(lseek((a), 0, SEEK_SET) != -1);           \
-	assert(read((a), &(b), sizeof(b)) == sizeof(b)); \
+	assert(write((a), &(b), sizeof(b)) == sizeof(b)); \
 }
 
 /**
@@ -556,11 +556,11 @@ int semaphore_test3(void)
 
 int semaphore_test2(void)
 {
+    int pid;
     int buffer_fd;              /* Buffer file descriptor.    */
 	int writer;                 /* Semáforo escritores.       */
     int mutex;                  /* Mutex.                     */
 	int buff_readers = 0;       /* Number of readers in buff. */
-	const int BUFFER_SIZE = 32; /* Buffer size.               */
 	const int NR_ITEMS = 512;   /* Number of items to send.   */
     
     /* Criar buffer.*/
@@ -584,7 +584,7 @@ int semaphore_test2(void)
         fork();
         fork();
 
-        while (true) {
+        while (0) {
             
 		    int pos = 2;
 
@@ -600,7 +600,7 @@ int semaphore_test2(void)
             /* Sair */
 
             /* Lê posição */
-            READ_POS(buffer_fd, pos);
+            READ_ITEM(buffer_fd, pos);
             
             /* Entra na Região Crítica */
             SEM_DOWN(mutex);
@@ -608,7 +608,7 @@ int semaphore_test2(void)
 
             /* Acorda o escritor se não houver mais leitores no buffer */
             if (buff_readers == 0) {
-                SEM_DOWN(sem);
+                SEM_UP(writer);
             }
             SEM_UP(mutex);
         }
@@ -617,15 +617,13 @@ int semaphore_test2(void)
 	/* Writer */
 	else
 	{
-		int item = 0;
-        
+		int item = 2;
+        int i = 0;
 		do
 		{
-		    int pos = NR_ITEMS % BUFFER_SIZE;
-
 			SEM_DOWN(writer);
 
-			CHANGE_ITEM(buffer_fd, item, pos);
+			CHANGE_ITEM(buffer_fd, item);
 
 			SEM_UP(writer);
 
@@ -637,6 +635,8 @@ int semaphore_test2(void)
 
     close(buffer_fd);
 	unlink("buffer");
+
+    return 0;
 }
 
 /*============================================================================*

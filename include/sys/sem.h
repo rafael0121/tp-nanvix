@@ -22,6 +22,7 @@
     
     #include <nanvix/const.h>
     #include <nanvix/pm.h>
+    #include <nanvix/klib.h>
 
 	/**
 	 * @brief Comand values for semaphores.
@@ -46,12 +47,13 @@
     // Estrutura do semáfaro 
     struct semaphore{
             int id;                 /* Identificador do semáforo */
-            int pos;                 /* Identificador do semáforo */
+            int pos;                /* Posição do semáforo na tabela de semáforos associados*/
             sem_t key;              /* Key do semáforo. */
             int value;              /* Valor do semáforo. */
             int state;              /* Estado do semáforo. */
             int procpriority;       /* Prioridade do próximo processo */
-            int procusing;
+            int procusing;          /* Processos usando o semáforo */
+            struct process **chain;               /* Cadeia de processos em sleep pelo semáforo */
     };
 
     // Declaração da lista de semafóros.
