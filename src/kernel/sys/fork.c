@@ -154,6 +154,9 @@ found:
 	proc->alarm = 0;
 	proc->next = NULL;
 	proc->chain = NULL;
+    for (i = 0; i < (SEM_MAX >> 4); i++){
+        proc->shared_sem[i] = curr_proc->shared_sem[i];
+    }
 	sched(proc);
 
 	curr_proc->nchildren++;
