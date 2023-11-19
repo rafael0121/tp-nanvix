@@ -53,7 +53,6 @@
             int state;              /* Estado do semáforo. */
             int procpriority;       /* Prioridade do próximo processo */
             int procusing;          /* Processos usando o semáforo */
-            struct process **chain;               /* Cadeia de processos em sleep pelo semáforo */
     };
 
     // Declaração da lista de semafóros.
