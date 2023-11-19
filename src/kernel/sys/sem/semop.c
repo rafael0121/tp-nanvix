@@ -9,9 +9,10 @@ int up (int semid)
                 if(check_valid(&semtab[i]) == -1) return -1;
 
                 if (semtab[semid].value == 0)
-                    wakeup(semtab[i].chain);
-
+                    wakeup(curr_proc->chain);
+                
                 semtab[i].value++;
+
                 
                 return 0;
             }
@@ -29,7 +30,7 @@ int down (int semid)
                     return -1;
                 }
                 while (semtab[i].value == 0) {
-                    sleep(semtab[i].chain, curr_proc->priority);
+                    sleep(curr_proc->chain, curr_proc->priority);
                 }
 
                 semtab[i].value--;
