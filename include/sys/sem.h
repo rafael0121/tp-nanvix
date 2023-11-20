@@ -51,7 +51,6 @@
             sem_t key;              /* Key do semáforo. */
             int value;              /* Valor do semáforo. */
             int state;              /* Estado do semáforo. */
-            int procpriority;       /* Prioridade do próximo processo */
             int procusing;          /* Processos usando o semáforo */
     };
 
