@@ -7,12 +7,6 @@
  */
 int associate_semaphore (struct semaphore *sem)
 {   
-    /**
-     * table = 0
-     * pos_table = 0
-     * comp = 1
-     */
-
     int table = sem->pos / 16; /* Encontra em qual tabela o semáforo está */
     int pos_table = sem->pos % 16; /* Descobre a posição do semáforo na tabela */
     int comp = 1;
@@ -48,7 +42,6 @@ int create_semaphore (unsigned key)
     newsem->key = key;
     newsem->value = 1;
     newsem->state = ACTIVE;
-    newsem->procpriority = 0;
     newsem->procusing = 0;
     
     if(associate_semaphore(newsem) == -1)

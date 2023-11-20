@@ -37,7 +37,8 @@ int setval (int semid, int val)
 }
 
 /**
- * @brief: Diminui o valor do semáforo e destrói ele se possível
+ * @brief: Diminui o valor da variável procusing e destrói o semáforo caso o valor resultante
+ *         seja 0.
  */
 int ipc_rmid (int semid)
 {
