@@ -584,7 +584,7 @@ int semaphore_test2(void)
         fork();
         fork();
 
-        while (0) {
+        for(int i = 0; i < NR_ITEMS; i++) {
             
 		    int pos = 2;
 
@@ -612,6 +612,9 @@ int semaphore_test2(void)
             }
             SEM_UP(mutex);
         }
+
+		_exit(EXIT_SUCCESS);
+
     }
 
 	/* Writer */
@@ -631,12 +634,16 @@ int semaphore_test2(void)
 
 		} while (i < NR_ITEMS);
 	}
-    
+    wait(NULL);
+
+	/* Destroy semaphores. */
+	SEM_DESTROY(mutex);
+	SEM_DESTROY(writer);
 
     close(buffer_fd);
 	unlink("buffer");
 
-    return 0;
+    return (0);
 }
 
 /*============================================================================*
@@ -810,6 +817,10 @@ int main(int argc, char **argv)
 			printf("Interprocess Communication Tests\n");
 			printf("  producer consumer [%s]\n",
 				(!semaphore_test3()) ? "PASSED" : "FAILED");
+
+			printf("  writer reader [%s]\n",
+				(!semaphore_test2()) ? "PASSED" : "FAILED");
+
 		}
 
 		/* FPU test. */
