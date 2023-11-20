@@ -46,3 +46,46 @@ O tempo total no teste realizado foi de 400 ms
 ## Conclusão
 
 Como os tempos obtidos nos testes nos dois cenários podemos constatar uma diferença de desempenho entre as formas de se escalonar. Ao utilizar o Round-Robin, obteve-se um desempenho pior em relação a Fila de Prioridades. Essa melhora de desempenho se deve ao fato de que a Fila de Prioridades executa mais comparações para definir qual processo é mais prioritário. O ponto é que a Fila de Prioridades garante haver uma justiça mais sólida em determinar a ordem de execução dos processos, pois na Fila de Prioridades garantimos que o sistema vai considerar as três variáveis no escalonamento. Essa garantia nas prioridades gerencia melhor o tempo no escalonamento, fazendo o custo de comparações maior compensar com a gerência no escalonamento.
+
+# Relatório referente à relização do Trabalho Prático 3: Semáforos no Nanvix
+
+## Importância dos semáforos
+
+Os semáforos são frequentemente utilizados para evitar condições de corrida, nas quais múltiplos processos ou threads podem acessar simultaneamente um recurso compartilhado.
+
+## Como o foi feita a implementação do semáforo
+
+Foi criada uma estrutura (no arquivo include/sys/sem.h) para agrupar os dados dos semáforos. Essa estrutura contém:
+
+- Id do semáforo
+- Posição do semáforo na tabela de semáforos associados aos processos
+- Key (chave) do semáforo
+- Valor armazenado pelo semáforo
+- Estado
+- Processos utilizando o semáforo
+
+Foi definida, por meio de um DEFINE, o número máximo de semáforos do sistema.
+
+>(sem_max, no arquivo include/nanvix/config.h)
+
+## Tabela de semáforos associados ao processo
+
+A tabela consiste na implementação de um vetor de valores inteiros de 16 bits, nos quais cada bit equivale a um semáforo:
+
+- O valor 1 representa semáforos associados ao processo
+- O valor 0 represneta semáforos não associados.
+
+## Operações up e down (semop.c)
+
+Tanto a operação up, quanto a operação down, buscam, na tabela de semáforos, o semáforo com o id correspondente ao id recebido como parâmetro. Após a busca, são realizadas as operações de sleep ou wake up.
+
+## Criação e associação de semáforos (semget.c)
+
+- A função create_semaphore é resposável por criar o semáforo e inicializar os valores de suas variáveis / dados.
+- A função associate_semaphore recebe um endereço de um semáforo como parâmetro e realiza, através de operações com bits, o setting do valor 1 na posição referente ao semáforo na tabela de semáforos associados ao processo.
+
+## Operações no semáforo (semctl.c)
+
+- Função getval: retorna o valor atual so semáforo
+- Função setval: define o valor do semáforo como sendo o valor da variável val, recebida como parâmetro
+- Função ipc_rmid: diminui o valor da variável procusing e destrói o semáforo caso o valor resultante seja 0 
