@@ -265,12 +265,27 @@
 	 * Get system ticks since initialization
 	 */
 	EXTERN int sys_gticks(void);
+    
+    /*
+     * Permite que o processo use o semáfaro associado a key.
+     */
+    EXTERN int sys_semget(unsigned key);
 
-  /*
-   * Pegar dados de um processo
-   */
+    /*
+     * Permite operações de controle no semáfaro.
+     */
+    EXTERN int sys_semctl(int semid, int cmd, int val);
+   
+    /*
+     * Permite operações de incremento/decremento no semáfaro.
+     */
+    EXTERN int sys_semop(int semid, int semop);
+
+    /*
+    * Pegar dados de um processo
+    */
 	EXTERN int sys_get_process_info(pid_t pid, struct process_buf *buf);
 
-#endif /* _ASM_FILE_ */
+    #endif /* _ASM_FILE_ */
 
 #endif /* NANVIX_SYSCALL_H_ */

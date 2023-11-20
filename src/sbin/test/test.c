@@ -491,7 +491,7 @@ int semaphore_test3(void)
 	else if (pid == 0)
 	{
 		for (int item = 0; item < NR_ITEMS; item++)
-		{
+		{   
 			SEM_DOWN(empty);
 			SEM_DOWN(mutex);
 
@@ -530,6 +530,120 @@ int semaphore_test3(void)
 	unlink("buffer");
 
 	return (0);
+}
+
+
+
+#define READ_ITEM(a, b)                               \
+{                                                    \
+	assert(lseek((a), 0, SEEK_SET) != -1);           \
+	assert(read((a), &(b), sizeof(b)) == sizeof(b)); \
+}
+
+#define CHANGE_ITEM(a, b)                               \
+{                                                    \
+	assert(lseek((a), 0, SEEK_SET) != -1);           \
+	assert(write((a), &(b), sizeof(b)) == sizeof(b)); \
+}
+
+/**
+ * @brief Writers-Readers problem with semaphores.
+ *
+ * @details Reproduces Writers-readers scenario using semaphores.
+ *
+ * @returns Zero if passed on test, and non-zero otherwise.
+ */
+
+int semaphore_test2(void)
+{
+    int pid;
+    int buffer_fd;              /* Buffer file descriptor.    */
+	int writer;                 /* Semáforo escritores.       */
+    int mutex;                  /* Mutex.                     */
+	int buff_readers = 0;       /* Number of readers in buff. */
+	const int NR_ITEMS = 512;   /* Number of items to send.   */
+    
+    /* Criar buffer.*/
+	buffer_fd = open("buffer", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	if (buffer_fd < 0)
+		return (-1);
+
+    /* Criar semáforos. */
+	SEM_CREATE(writer, 1);
+	SEM_CREATE(mutex, 2);
+
+    SEM_INIT(writer, 1);
+    SEM_INIT(mutex, 1);
+
+    if ((pid = fork()) < 0)
+		return (-1);
+
+	/* Leitor */
+    else if (pid == 0) {
+
+        fork();
+        fork();
+
+        for(int i = 0; i < NR_ITEMS; i++) {
+            
+		    int pos = 2;
+
+            /* Entra na Região Crítica */
+            SEM_DOWN(mutex);
+            buff_readers++; 
+
+            if (buff_readers == 1) {
+                /* Colocar o escritor em sleep */
+                SEM_DOWN(writer);
+            }
+            SEM_UP(mutex);
+            /* Sair */
+
+            /* Lê posição */
+            READ_ITEM(buffer_fd, pos);
+            
+            /* Entra na Região Crítica */
+            SEM_DOWN(mutex);
+            buff_readers--; 
+
+            /* Acorda o escritor se não houver mais leitores no buffer */
+            if (buff_readers == 0) {
+                SEM_UP(writer);
+            }
+            SEM_UP(mutex);
+        }
+
+		_exit(EXIT_SUCCESS);
+
+    }
+
+	/* Writer */
+	else
+	{
+		int item = 2;
+        int i = 0;
+		do
+		{
+			SEM_DOWN(writer);
+
+			CHANGE_ITEM(buffer_fd, item);
+
+			SEM_UP(writer);
+
+            i++;
+
+		} while (i < NR_ITEMS);
+	}
+    wait(NULL);
+
+	/* Destroy semaphores. */
+	SEM_DESTROY(mutex);
+	SEM_DESTROY(writer);
+
+    close(buffer_fd);
+	unlink("buffer");
+
+    return (0);
 }
 
 /*============================================================================*
@@ -703,6 +817,10 @@ int main(int argc, char **argv)
 			printf("Interprocess Communication Tests\n");
 			printf("  producer consumer [%s]\n",
 				(!semaphore_test3()) ? "PASSED" : "FAILED");
+
+			printf("  writer reader [%s]\n",
+				(!semaphore_test2()) ? "PASSED" : "FAILED");
+
 		}
 
 		/* FPU test. */

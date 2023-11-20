@@ -3,8 +3,8 @@
 
 layout split
 target remote tcp::1234
-file bin/sbin/test
-symbol-file bin/sbin/test
+file bin/kernel
+symbol-file bin/kernel
 handle SIGSEGV nostop noprint nopass
 set confirm off
 focus cmd
